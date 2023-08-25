@@ -1,0 +1,35 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: web-page
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: meudeployment
+  template:
+    metadata:
+      labels:
+        app: meudeployment
+    spec:
+      containers:
+        - name: web
+          image: luanprates/conversao-temperatura:latest
+          ports:
+          - containerPort: 80
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-page
+spec:
+  selector:
+    app: meudeployment
+  ports:
+    - protocol: TCP
+      port: 8080
+      name: http
+      nodePort: 30000
+  type: NodePort
